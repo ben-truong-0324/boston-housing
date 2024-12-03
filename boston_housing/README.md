@@ -11,7 +11,7 @@ The goal of this project is to predict housing prices in Boston based on several
 
 ## Installation and Setup
 
-### 1. **Setting up the Conda Environment**
+### **Setting up the Conda Environment**
 
 To set up the project, it is recommended to use the provided `environment.yml` file to create a conda environment with the necessary dependencies.
 
@@ -19,9 +19,10 @@ To set up the project, it is recommended to use the provided `environment.yml` f
 conda env create -f environment.yml
 conda activate ml_general
 
-* download/copy data into raw.txt in ./data/raw.txt
+# download/copy data into raw.txt in ./data/raw.txt
 python -m boston_housing/etl.py
 python -m boston_housing/dt.py
+```
 
 ## License
 
