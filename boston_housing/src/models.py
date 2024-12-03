@@ -12,7 +12,7 @@ from tabulate import tabulate
 import pickle
 import random
 from copy import deepcopy
-import hypotheses
+import boston_housing.hypotheses as hypotheses
 import math
 
 from scipy.stats import ttest_1samp

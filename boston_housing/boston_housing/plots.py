@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib as mlt
-import seaborn as sns
+# import seaborn as sns
 import time
 import pandas as pd
 import numpy as np
@@ -8,7 +8,7 @@ import os
 from sklearn.metrics import silhouette_score
 import pickle
 
-from config import *
+from boston_housing.config import *
 
 def plot_fitness_iterations(nn_models, algorithm_names):
     plt.figure(figsize=(12, 6))
@@ -1498,65 +1498,74 @@ def plot_accuracy_grid_from_files(datasets, output_dir="../outputs"):
 
 
 
+def plot_dt_results(results,save_path):
+    if not os.path.exists(save_path):
+        # Convert the results dictionary into a pandas DataFrame for easier plotting
+        results_df = pd.DataFrame(results).T  # Transpose so models are rows and metrics are columns
+        
+        # Create a color palette for the bars
+        colors = plt.cm.viridis(np.linspace(0, 1, len(results_df)))
+        
+        # Plotting MSE, MAE, and R2 for each model
+        fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+        
+        # Plot MSE
+        axes[0].bar(results_df.index, results_df['MSE'], color=colors)
+        axes[0].set_title('Mean Squared Error (MSE)')
+        axes[0].set_xlabel('Models')
+        axes[0].set_ylabel('MSE')
+        axes[0].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for readability
+        
+        # Plot MAE
+        axes[1].bar(results_df.index, results_df['MAE'], color=colors)
+        axes[1].set_title('Mean Absolute Error (MAE)')
+        axes[1].set_xlabel('Models')
+        axes[1].set_ylabel('MAE')
+        axes[1].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for readability
+        
+        # Plot R2
+        axes[2].bar(results_df.index, results_df['R2'], color=colors)
+        axes[2].set_title('R2 Score')
+        axes[2].set_xlabel('Models')
+        axes[2].set_ylabel('R2')
+        axes[2].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for readability
+        
+        
+        plt.tight_layout()
+        plt.savefig(save_path)
+        plt.close()
 
-import matplotlib.pyplot as plt
-import numpy as np
 
-# Data
-metrics = ['F1 Score', 'AUPRC', 'AUROC']
-farsight_scores = [0.76, 0.72, 0.82]
-baumel_scores = [0.56, None, None]  # Missing values represented as None
-state_of_the_art = [None, 0.6, 0.78]
-optimized_scores = [0.97, 0.95, 0.98]
 
-# Grouped bar settings
-valid_indices = [
-    i for i, (fs, bm, so, op) in enumerate(zip(farsight_scores, baumel_scores, state_of_the_art, optimized_scores))
-    if fs is not None or bm is not None or so is not None or op is not None
-]
-metrics_filtered = [metrics[i] for i in valid_indices]
-farsight_filtered = [farsight_scores[i] for i in valid_indices]
-baumel_filtered = [baumel_scores[i] for i in valid_indices]
-state_of_the_art_filtered = [state_of_the_art[i] for i in valid_indices]
-optimized_filtered = [optimized_scores[i] for i in valid_indices]
+def plot_predictions_vs_actuals(y_test, y_pred, model_name, save_path):
+    if not os.path.exists(save_path):
+        # Assuming y_test and y_pred are pandas Series or numpy arrays
+        if isinstance(y_test, pd.Series):
+            y_test = y_test.values  # Convert to numpy array if Series
+        
+        if isinstance(y_pred, pd.Series):
+            y_pred = y_pred.values  # Convert to numpy array if Series
+        
+        # Create indices for plotting
+        indices = range(len(y_test))
+        
+        # Plot actual vs predicted values
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.scatter(indices, y_test, color='blue', label='Actual', alpha=0.6)
+        ax.scatter(indices, y_pred, color='orange', label='Predicted', alpha=0.6)
+        
+        # Plot the differences (as red lines)
+        for i in indices:
+            ax.plot([i - 0.2, i + 0.2], [y_test[i], y_pred[i]], color='red', linewidth=1.5)
 
-x = np.arange(len(metrics_filtered))  # X positions for valid metrics
-width = 0.2  # Width of each bar
-
-# Create the plot
-fig, ax = plt.subplots(figsize=(10, 6))
-
-# Plot bars
-bars_farsight = ax.bar(x - 1.5 * width, farsight_filtered, width, label='Farsight', color='blue', alpha=0.7)
-bars_baumel = ax.bar(x - 0.5 * width, [bm if bm is not None else 0 for bm in baumel_filtered], width, label='Baumel et al.', color='orange', alpha=0.7)
-bars_state = ax.bar(x + 0.5 * width, [so if so is not None else 0 for so in state_of_the_art_filtered], width, label='State of the Art', color='purple', alpha=0.7)
-bars_optimized = ax.bar(x + 1.5 * width, optimized_filtered, width, label='Optimized', color='green', alpha=0.7)
-
-# Add labels, title, and legend
-ax.set_title('Metric Comparison Across Models')
-ax.set_ylabel('Score')
-ax.set_xticks(x)
-ax.set_xticklabels(metrics_filtered)
-ax.set_ylim(0, 1)
-ax.legend(loc='upper left')
-
-# Add gridlines for better readability
-ax.grid(axis='y', linestyle='--', alpha=0.5)
-
-# Add numbers on top of each bar
-for bars, scores in zip([bars_farsight, bars_baumel, bars_state, bars_optimized], 
-                        [farsight_filtered, baumel_filtered, state_of_the_art_filtered, optimized_filtered]):
-    for bar, score in zip(bars, scores):
-        if score is not None:  # Only annotate if the score is not None
-            height = bar.get_height()
-            ax.text(
-                bar.get_x() + bar.get_width() / 2,  # X-coordinate (center of the bar)
-                height + 0.01,  # Y-coordinate (slightly above the bar)
-                f'{height:.2f}',  # Format height as a string with 2 decimals
-                ha='center', va='bottom', fontsize=10  # Align text to center of bar
-            )
-
-# Adjust layout and save the plot
-plt.tight_layout()
-plt.savefig("metric_comparison_no_gaps.png", dpi=300)  # Save as a high-resolution image
-plt.show()
+        # Set plot titles and labels
+        ax.set_title('Predictions vs Actuals', fontsize=16)
+        ax.set_xlabel('Sample Index', fontsize=12)
+        ax.set_ylabel('Price', fontsize=12)
+        ax.legend()
+        
+        plt.tight_layout()
+        plt.savefig(save_path)
+        plt.show()
+        
+        plt.close()

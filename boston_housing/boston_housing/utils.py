@@ -11,7 +11,7 @@ from tabulate import tabulate
 import pickle
 import random
 from copy import deepcopy
-import hypotheses
+import boston_housing.hypotheses
 import math
 
 from scipy.stats import ttest_1samp
@@ -218,3 +218,51 @@ def print_and_save_metrics(results, output_file):
 
 # Example usage
 # print_and_save_metrics(results, 'metrics_summary.txt')
+
+
+def check_data_info(X, y, X_train, X_test, y_train, y_test, show = False):
+    if show:
+        # Check data types and shapes for each of the variables
+        data_info = {
+            'X': {'dtype': type(X), 'shape': X.shape if isinstance(X, (np.ndarray, pd.DataFrame)) else 'Not an array-like object'},
+            'y': {'dtype': type(y), 'shape': y.shape if isinstance(y, (np.ndarray, pd.Series)) else 'Not an array-like object'},
+            'X_train': {'dtype': type(X_train), 'shape': X_train.shape if isinstance(X_train, (np.ndarray, pd.DataFrame)) else 'Not an array-like object'},
+            'X_test': {'dtype': type(X_test), 'shape': X_test.shape if isinstance(X_test, (np.ndarray, pd.DataFrame)) else 'Not an array-like object'},
+            'y_train': {'dtype': type(y_train), 'shape': y_train.shape if isinstance(y_train, (np.ndarray, pd.Series)) else 'Not an array-like object'},
+            'y_test': {'dtype': type(y_test), 'shape': y_test.shape if isinstance(y_test, (np.ndarray, pd.Series)) else 'Not an array-like object'}
+        }
+
+        # Print the data type and shape for each variable
+        for var, info in data_info.items():
+            print(f'{var}: Type = {info["dtype"]}, Shape = {info["shape"]}')
+            
+        # Function to check columns, data types, and unique values
+        def check_dataframe_info(df, name):
+            if isinstance(df, (pd.DataFrame, pd.Series)):
+                print(f"\n{name} DataFrame/Series:")
+                # Iterate through columns to check unique counts
+                if isinstance(df, pd.DataFrame):  # For DataFrame, check columns
+                    for col in df.columns:
+                        if df[col].dtype in ['int64', 'float64']:  # Numeric column
+                            if df[col].nunique() > 10:  # Skip unique count if there are more than 10 unique values
+                                print(f"Column '{col}': {df[col].dtype}, Numerical")
+                            else:
+                                print(f"Column '{col}': {df[col].dtype}, Unique Values = {df[col].nunique()}")
+                        else:  # Categorical column (non-numeric)
+                            print(f"Column '{col}': {df[col].dtype}, Unique Values = {df[col].nunique()}")
+                else:  # For Series, just show unique counts
+                    print(f"Unique Values: {df.nunique()}")
+
+        # Check DataFrame info for X, X_train, and X_test (assuming they are DataFrames)
+        if isinstance(X, (pd.DataFrame, pd.Series)):
+            check_dataframe_info(X, 'X')
+        if isinstance(X_train, (pd.DataFrame, pd.Series)):
+            check_dataframe_info(X_train, 'X_train')
+        if isinstance(X_test, (pd.DataFrame, pd.Series)):
+            check_dataframe_info(X_test, 'X_test')
+        if isinstance(y, (pd.Series, pd.DataFrame)):
+            check_dataframe_info(y, 'y')
+        if isinstance(y_train, (pd.Series, pd.DataFrame)):
+            check_dataframe_info(y_train, 'y_train')
+        if isinstance(y_test, (pd.Series, pd.DataFrame)):
+            check_dataframe_info(y_test, 'y_test')

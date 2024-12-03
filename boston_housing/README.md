@@ -1,29 +1,49 @@
-# text_to_diag
-# Text2Diag
+# Boston Housing ML Project
 
-This repository is an implementation attempt of the research paper **"FarSight: Long-Term Disease Prediction Using Unstructured Clinical Nursing Notes"** by Khai Truong and Nicholas Grub, Georgia Tech, as part of CS7641: Machine Learning. The goal is to develop a model capable of generating diagnostic codes from unstructured nursing notes, enabling accurate diagnostic code assignment at a patient's first ICU visit.
+This project implements machine learning models to predict housing prices in Boston using different techniques such as decision trees, bagging, and boosting. It provides an easy-to-follow framework for data preprocessing, training, evaluating, and visualizing the results.
 
-## Overview
+## Project Overview
 
-Clinical nursing notes contain rich, unstructured information about a patient's condition and care. Extracting actionable insights from these notes is critical for timely and accurate disease prediction and diagnosis. This project aims to replicate the methodology and findings of FarSight by employing machine learning techniques to process unstructured text and predict diagnostic codes.
+Data is retrieved from https://lib.stat.cmu.edu/datasets/boston.
+The goal of this project is to predict housing prices in Boston based on several features. The dataset is widely used in machine learning for regression tasks. Various regression models are trained, evaluated, and their performances are compared using metrics such as Mean Squared Error (MSE), Mean Absolute Error (MAE), and R² score. Additionally, the project includes cross-validation and visualization of results.
 
-## Features
+![Decision Tree Performance](dt_results.png)
 
-- **Text Preprocessing**: Transform unstructured nursing notes into a format suitable for machine learning.
-- **Model Training**: Train machine learning models to predict diagnostic codes based on the notes.
-- **Evaluation**: Assess model performance using appropriate metrics, including accuracy, precision, recall, and F1-score.
-- **Replication of FarSight**: Closely replicate the steps and findings outlined in the research paper.
+## Installation and Setup
 
-## Getting Started
+### 1. **Setting up the Conda Environment**
 
-### Prerequisites
+To set up the project, it is recommended to use the provided `environment.yml` file to create a conda environment with the necessary dependencies.
 
-Set up the environment using the `bd4h` configuration provided:
+```bash
+conda env create -f environment.yml
+conda activate ml_general
 
-#### Environment Setup
+* download/copy data into raw.txt in ./data/raw.txt
+python -m boston_housing/etl.py
+python -m boston_housing/dt.py
 
-1. Install [Anaconda](https://www.anaconda.com/) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
-2. Create the environment using the provided configuration file:
+## License
 
-   ```bash
-   conda env create -f environment.yml
+This project is licensed under the MIT License.
+MIT License
+
+Copyright (c) 2024 Ben Truong
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

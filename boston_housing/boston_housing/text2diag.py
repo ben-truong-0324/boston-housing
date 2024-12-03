@@ -1,9 +1,9 @@
 from config import *
 from tests import *
-from models import *
+from src.models import *
 from utils import *
-import data_etl
-import data_plots
+import boston_housing.etl as etl
+import boston_housing.plots as plots
 import pickle
 import glob
 import re
@@ -555,7 +555,7 @@ def y_pred_check():
         if isinstance(predicted[0], (list, np.ndarray)):  # Multi-label
             # print("Detected multi-label classification.")
             is_multi = True
-            data_plots.plot_prediction_comparison(y_test, predicted, EVAL_FUNC_METRIC, 
+            plots.plot_prediction_comparison(y_test, predicted, EVAL_FUNC_METRIC, 
                     title=f"{'.'.join(y_pred_file.split('.')[:-1])}", )
             
         else:  # Single-label
@@ -566,7 +566,7 @@ def y_pred_check():
         output_file = f"{Y_PRED_PKL_OUTDIR}/merged_y_prediction_stats.pkl"
         merged_data = merge_y_pred_pkl_files(input_directory, output_file)
 
-        data_plots.plot_merged_y_pred_data(merged_data)
+        plots.plot_merged_y_pred_data(merged_data)
 
 def farsight_res_vis():
     datasets = ['doc2vec', 'NMF_BOW', 'NMF_TW', 'NMF_BOW_SC', 'NMF_TW_SC']
@@ -648,9 +648,9 @@ def farsight_res_vis():
     # data_plots.plot_mismatches(results)
     print_and_save_metrics(results, output_file_txt)
     for metric_name in ['label_accuracy', 'auc_roc', 'f1', 'mcc', 'auprc']:
-        data_plots.plot_farsight_metric_with_std(results, metric_name)
-    data_plots.plot_farsight_metric_with_std_agg(results)
-    data_plots.plot_accuracy_grid_from_files(datasets)
+        plots.plot_farsight_metric_with_std(results, metric_name)
+    plots.plot_farsight_metric_with_std_agg(results)
+    plots.plot_accuracy_grid_from_files(datasets)
 
           
 
@@ -669,7 +669,7 @@ def y_pred_farsight_check():
         if isinstance(predicted[0], (list, np.ndarray)):  # Multi-label
             # print("Detected multi-label classification.")
             is_multi = True
-            data_plots.plot_prediction_comparison(y_test, predicted, EVAL_FUNC_METRIC, 
+            plots.plot_prediction_comparison(y_test, predicted, EVAL_FUNC_METRIC, 
                     title=f"{'.'.join(y_pred_file.split('.')[:-1])}", )
             
         else:  # Single-label
@@ -680,14 +680,14 @@ def y_pred_farsight_check():
         output_file = f"{Y_PRED_PKL_OUTDIR}/merged_y_prediction_stats.pkl"
         merged_data = merge_y_pred_pkl_files(input_directory, output_file)
 
-        data_plots.plot_merged_y_pred_data(merged_data)
+        plots.plot_merged_y_pred_data(merged_data)
 
 
 def check_etl():
-    X, y = data_etl.get_data(DATASET_SELECTION,1, 1)
+    X, y = etl.get_data(DATASET_SELECTION,1, 1)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.1, random_state=GT_ID)
     test_data_etl_input_check(X, y, X_train, X_test, y_train, y_test, verbose = 1)
-    data_etl.graph_raw_data(X, y)
+    etl.graph_raw_data(X, y)
     TestClusteringFunctions()
     print("======> Data verification complete")
     return X,y,X_train, X_test, y_train, y_test 

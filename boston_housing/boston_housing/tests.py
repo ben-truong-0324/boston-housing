@@ -8,9 +8,9 @@ from tabulate import tabulate
 
 from sklearn.datasets import make_blobs
 
-import text2diag
+import boston_housing.dt
 
-from config import *
+from boston_housing.config import *
 
 
 import pandas as pd
@@ -139,8 +139,8 @@ def get_column_info(X, y):
 
 
 def test_data_etl_input_check(X,y,X_train, X_test, y_train, y_test, 
-                        verbose = True):
-    if DATA_DEBUG:
+                        show = False):
+    if show:
         try:
             data_info = [
                     ["X", type(X).__name__, X.shape if hasattr(X, 'shape') else 'N/A'],
@@ -166,44 +166,6 @@ def test_data_etl_input_check(X,y,X_train, X_test, y_train, y_test,
             print("All unit tests passed!")
         except Exception as e:
             print(f"An error occurred: {e}")
-
-
-class TestClusteringFunctions(unittest.TestCase):
-
-    def setUp(self):
-        # Create a sample dataset
-        self.X, self.y = make_blobs(n_samples=100, centers=3, cluster_std=0.60, random_state=0)
-
-    def test_run_clustering_kmeans(self):
-        """Test KMeans clustering functionality."""
-        runtime, labels = text2diag.run_clustering('kmeans', 3, random_state=42, X=self.X, y=self.y)
-        self.assertEqual(len(labels), len(self.X), "The number of labels should match the number of data points.")
-        self.assertIsInstance(runtime, float, "Runtime should be a float.")
-
-    def test_run_clustering_gmm(self):
-        """Test GMM clustering functionality."""
-        runtime, labels = text2diag.run_clustering('gmm', 3, random_state=42, X=self.X, y=self.y)
-        self.assertEqual(len(labels), len(self.X), "The number of labels should match the number of data points.")
-        self.assertIsInstance(runtime, float, "Runtime should be a float.")
-
-    def test_run_clustering_invalid_n_clusters(self):
-        """Test that ValueError is raised for invalid n_clusters."""
-        with self.assertRaises(ValueError) as context:
-            text2diag.run_clustering('kmeans', 1, random_state=42, X=self.X, y=self.y)
-        self.assertEqual(str(context.exception), "n_clusters must be between 2 and 39.")
-
-    def test_collect_cluster_results(self):
-        """Test that results are collected for a valid algorithm."""
-        collect_cluster_results(self.X, self.y, 'kmeans')  # This will also print output
-        # Check if the pickle file is created (modify path accordingly)
-        self.assertTrue(os.path.exists(f'{OUTPUT_DIR_A3}/kmeans_results.pkl'))
-
-    def test_collect_cluster_results_invalid_algorithm(self):
-        """Test that ValueError is raised for unsupported algorithms."""
-        with self.assertRaises(ValueError) as context:
-            collect_cluster_results(self.X, self.y, 'unsupported_algo')
-        self.assertEqual(str(context.exception), "Unsupported clustering algorithm. Choose 'kmeans' or 'gmm'.")
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,9 +3,9 @@ import socket
 # Determine the hostname
 hostname = socket.gethostname()
 if hostname == "Khais-MacBook-Pro.local" or hostname == "Khais-MBP.attlocal.net":  # Replace with macbook hostname
-    from config_dev import *  # Import everything from config_dev, small monte carlo count, smalle
+    from src.config_mac import *  # Import everything from config_dev, small monte carlo count, smalle
 else:
-    from config_prod import * #BIG SIMU
+    from src.config_cuda import * #BIG SIMU
 
 import os
 
@@ -27,11 +27,12 @@ FARSIGHT_MODELS = [
                     ]
 AGGREGATED_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/agregated_graphs')
 Y_PRED_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/y_pred_graphs')
+CV_LOSSES_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/pkl_cv')
+TXT_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/txt_stats')
 
 
 CLUSTER_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/pkl')
 DREDUCED_CLUSTER_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/pkl')
-Y_PRED_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/pkl_ypred')
 CV_LOSSES_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/pkl_cv')
 NN_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/pkl_nn')
 
@@ -39,7 +40,6 @@ NN_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_ME
 NN_CLUSTERED_DREDUCED_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/cluster_of_reduced')
 CLUSTER_GRAPH_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/cluster')
 DREDUCED_PKL_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/dreduced_pickles')
-TXT_OUTDIR = set_output_dir(f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}_{EVAL_FUNC_METRIC}/txt_stats')
 
 OUTPUT_DIR_RAW_DATA_A3 = f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}/raw_data_assessment'
 OUTPUT_DIR_CLUSTERING_BASELINE_A3 = f'{OUTPUT_DIR_A3}/ver{DRAFT_VER_A3}/baseline_cluster'

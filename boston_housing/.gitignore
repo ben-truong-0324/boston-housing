@@ -1,3 +1,4 @@
 data/
 outputs/
+**/outputs/
 **/__pycache__/

@@ -1,7 +1,7 @@
 print("prod config (aka for windows)")
 
 import numpy as np
-from sklearn.model_selection import ParameterSampler
+# from sklearn.model_selection import ParameterSampler
 
 
 GT_ID = 68420 #randomizer seed
@@ -26,7 +26,7 @@ NN_MAX_EPOCH = 100
 
 
 
-FARSIGHT_PARAM_GRID = {
+PARAM_GRID = {
     'lr': [ 0.0005],
     'batch_size': [ 16],
     'dropout_rate': [0],
@@ -34,7 +34,7 @@ FARSIGHT_PARAM_GRID = {
     # 'activation_function': just use relu
 }
 
-FARSIGHT_SRX_PARAMS = list(ParameterSampler(FARSIGHT_PARAM_GRID, n_iter=RANDOM_OPTIMIZATION_ITERATION_COUNT, random_state=GT_ID))
+# FARSIGHT_SRX_PARAMS = list(ParameterSampler(PARAM_GRID, n_iter=RANDOM_OPTIMIZATION_ITERATION_COUNT, random_state=GT_ID))
 
 
 
@@ -123,5 +123,5 @@ PARAM_GRID = {
 }
 
 # Generate a random sample of 15 combinations from the grid
-RANDOM_SRX_PARAMS = list(ParameterSampler(PARAM_GRID, n_iter=RANDOM_OPTIMIZATION_ITERATION_COUNT, random_state=GT_ID))
+# RANDOM_SRX_PARAMS = list(ParameterSampler(PARAM_GRID, n_iter=RANDOM_OPTIMIZATION_ITERATION_COUNT, random_state=GT_ID))
 
