@@ -7,7 +7,7 @@ This project implements machine learning models to predict housing prices in Bos
 Data is retrieved from https://lib.stat.cmu.edu/datasets/boston.
 The goal of this project is to predict housing prices in Boston based on several features. The dataset is widely used in machine learning for regression tasks. Various regression models are trained, evaluated, and their performances are compared using metrics such as Mean Squared Error (MSE), Mean Absolute Error (MAE), and R² score. Additionally, the project includes cross-validation and visualization of results.
 
-![Decision Tree Performance](boston-housing/dt_results.png)
+![Decision Tree Performance](boston_housing/dt_results.png)
 
 ## Installation and Setup
 
